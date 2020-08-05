@@ -43,13 +43,12 @@ Running Django applications has been simplified with a `manage.py` file to avoid
 
 ```bash
 pipenv install
-pipenv shell
 ```
 
 To run your application locally:
 
 ```bash
-python manage.py start
+pipenv run python manage.py start
 ```
 
 Your application will be running at `http://localhost:3000`.  You can access the `/health` endpoint at the host. You can also verify the state of your locally running application using the Selenium UI test script included in the `scripts` directory.
