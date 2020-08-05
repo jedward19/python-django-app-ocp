@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: python-django-app-ocp
+    version: v1
+  name: python-django-app-ocp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-django-app-ocp
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: python-django-app-ocp
+        version: v1
+    spec:
+      containers:
+        - name: python-django-app-ocp
+          image: image-registry.openshift-image-registry.svc:5000/dev-jce/python-django-app-ocp:latest
+          imagePullPolicy: Always
+          # env:
+          #   - name: SPRING_PROFILES_ACTIVE
+          #     value: cloud
+          ports:
+            - containerPort: 3000
+              name: http
+              protocol: TCP
+          resources:
+            limits:
+              cpu: "300m"
+              memory: "400Mi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+              scheme: HTTP         
+            initialDelaySeconds: 20
+            timeoutSeconds: 4
+            periodSeconds: 5
+            failureThreshold: 12
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 20
+            timeoutSeconds: 4
+            periodSeconds: 5
+            failureThreshold: 12
