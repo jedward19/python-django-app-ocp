@@ -1,0 +1,14 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: python-django-app-ocp
+  labels:
+    app: python-django-app-ocp
+spec:
+  to:
+    kind: Service
+    name: python-django-app-ocp
+    weight: 100
+  port:
+    targetPort: http
+
