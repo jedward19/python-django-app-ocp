@@ -75,6 +75,74 @@ To debug a `django` project run `python manage.py runserver` with DEBUG set to T
 1. Open browser to http://localhost:3000
 
 
+### Running via OpenShift
+
+1. Create GitHub.com Personal Access Token with `Private` and `Public` repo access. 
+
+    1. Navigate to [Developer Settings](https://github.com/settings/tokens) and generate a new token; 
+    
+        `Note` name: Tekton CI Pipeline
+        From `Select scopes`, select:
+        - `repo`
+        - `write:repo_hook`
+    
+    1. Save the generated `Personal Access Token` in notepad or Password manager as Personal Access Token is not shown again.
+
+
+1. From OpenShift Web Console, select `Copy Login Command` -> `Display Token`. Open a Terminal or Windows `Git Bash` window, and `Log in with this token` command.
+
+1. Set current OpenShift project
+
+    ```sh
+    oc project <your project>
+    ```
+
+
+1. Create the Tekton Pipeline GIT repo Secret
+
+    1. Duplicate `TEMPLATE_GIT_SECRET.yaml` and call it `DONOT_SAVE_git_secret.yaml`
+    1. Edit the `DONOT_SAVE_git_secret.yaml`
+
+        1. Replace `<replace-with-github.com-shortname-userid>` with your GitHub.com username (shortname)
+        1. Repalce `<replace-with-github.com-personal-access-token>` with the Personal Acces Token performed above
+        1. Save `DONOT_SAVE_git_secret.yaml`
+
+    1. Apply Secret, `user-at-github` to OpenShift
+
+        ```sh
+        oc apply -f DONOT_SAVE_git_secret.yaml
+        ```
+
+    1. Link secret to Tekton `pipeline` serviceaccount
+
+        ```sh
+        oc patch serviceaccount pipeline -p '{"secrets": [{"name": "user-at-github"}]}'
+        ```
+
+1. Setup Tekton project Pipeline. Run the following command
+
+        ```sh
+        oc apply -f tekton/
+        ```
+
+1. (Optional) Create Initial Pipeline Start Config and Run Pipeline
+
+    1. Within your OpenShift Web Console, select `Pipelines` from left menu and select `python-django-app-ocp-build-and-deploy`
+    
+    1. From `python-django-app-ocp-build-and-deploy`, click `Actions` drop-down and click `Start`
+    
+    1. From `Start Pipeline` dialog, confirm the following are selected
+        deployment-name: python-django-app-ocp
+        git-repo: https://github.com/jedward19/python-django-app-ocp.git (OR your appropriate repo link)
+        image: image-registry.openshift-image-registry.svc:5000/dev-jce/python-django-app-ocp:latest
+    1. Click `Start` button
+
+
+1. Test Application
+
+    1. From OpenShift Web Console, select `Developer` perspective, select your project and click Topology
+    1. Click on `python-django-app-ocp` from the Topology view and click on your Route url
+
 ## License
 
 This sample application is licensed under the Apache License, Version 2. Separate third-party code objects invoked within this code pattern are licensed by their respective providers pursuant to their own separate licenses. Contributions are subject to the [Developer Certificate of Origin, Version 1.1](https://developercertificate.org/) and the [Apache License, Version 2](https://www.apache.org/licenses/LICENSE-2.0.txt).
