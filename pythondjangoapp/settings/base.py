@@ -60,12 +60,12 @@ WSGI_APPLICATION = 'pythondjangoapp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME', 'blog_data'),
-        'USER': os.getenv('DB_USER', 'djangouser'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', 'sampledb'),
+        'USER': os.getenv('DB_USER', 'admin'),
         'PASSWORD': os.getenv('DB_PASSWORD', 'password'),
         'HOST': os.getenv('DB_HOSTNAME', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '3306'),
+        'PORT': os.getenv('DB_PORT', '5432'),
         'CHARSET': 'utf8'
     }
 }

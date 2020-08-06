@@ -21,9 +21,17 @@ spec:
         - name: python-django-app-ocp
           image: image-registry.openshift-image-registry.svc:5000/dev-jce/python-django-app-ocp:latest
           imagePullPolicy: Always
-          # env:
-          #   - name: SPRING_PROFILES_ACTIVE
-          #     value: cloud
+          env:
+             - name: DB_HOSTNAME
+               value: sampledb-svc
+             - name: DB_PORT
+               value: '5432'
+             - name: DB_NAME
+               value: sampledb   
+             - name: DB_USER
+               value: admin
+             - name: DB_PASSWORD
+               value: password
           ports:
             - containerPort: 3000
               name: http
