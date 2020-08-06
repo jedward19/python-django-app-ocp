@@ -64,7 +64,7 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME', 'blog_data'),
         'USER': os.getenv('DB_USER', 'djangouser'),
         'PASSWORD': os.getenv('DB_PASSWORD', 'password'),
-        'HOST': os.getenv('DB_HOSTNAME', 'unknown'),
+        'HOST': os.getenv('DB_HOSTNAME', 'localhost'),
         'PORT': os.getenv('DB_PORT', '3306'),
         'CHARSET': 'utf8'
     }
