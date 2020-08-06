@@ -55,6 +55,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pythondjangoapp.wsgi.application'
 
+# Database
+# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DB_NAME', 'blog_data'),
+        'USER': os.getenv('DB_USER', 'djangouser'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'password'),
+        'HOST': os.getenv('DB_HOSTNAME', 'unknown'),
+        'PORT': os.getenv('DB_PORT', '3306'),
+        'CHARSET': 'utf8'
+    }
+}
+
+
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 

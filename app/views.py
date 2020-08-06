@@ -1,10 +1,19 @@
-from __future__ import unicode_literals
+import os
+# from __future__ import unicode_literals
 from django.http import JsonResponse
 from django.shortcuts import render
 
+from .models import PageView
 
 def index(request):
-    return render(request, 'index.html')
+    hostname = os.getenv('HOSTNAME', 'unknown')
+    hostname = hostname[:250]
+    PageView.objects.create(hostname=hostname)
+
+    return render(request, 'index.html', {
+        'hostname': hostname,
+        'count': PageView.objects.count()
+    })
 
 
 def health(request):
